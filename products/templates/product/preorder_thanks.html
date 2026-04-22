@@ -1,0 +1,9 @@
+{% extends "product/base.html" %}
+{% load humanize %}
+
+{% block content %}
+<h1>Thank you!</h1>
+<p>Your pre‑order has been received. We will contact you on Viber/phone soon.</p>
+<p>Pre‑order ID: {{ preorder_id }}</p>
+<a class="btn" href="{% url 'product_list' %}">Back to designs</a>
+{% endblock %}
