@@ -5,7 +5,7 @@ set -e
 python manage.py migrate --noinput
 
 # 2️⃣ Create superuser only if the table is empty
-python manage.py shell - <<'PY'
+python manage.py shell <<'PY'
 from django.contrib.auth import get_user_model
 User = get_user_model()
 if not User.objects.filter(is_superuser=True).exists():
