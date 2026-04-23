@@ -266,7 +266,7 @@
           </div>
           {% empty %}
           <div class="swiper-slide">
-            <img src="{{ product.image.url }}" alt="{{ product.name }}">
+            <img src="{{ product.image_url }}" alt="{{ product.name }}">
           </div>
           {% endfor %}
         </div>
@@ -282,7 +282,7 @@
           </div>
           {% empty %}
           <div class="swiper-slide">
-            <img src="{{ product.image.url }}" alt="thumbnail">
+            <img src="{{ product.image_url }}" alt="thumbnail">
           </div>
           {% endfor %}
         </div>
@@ -419,7 +419,28 @@
 {% endblock %}
 
 {% block extra_js %}
+<script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
 <script>
+  // Initialize Swiper
+  const swiperMain = new Swiper('.product-swiper-main', {
+    loop: true,
+    navigation: {
+      nextEl: '.swiper-button-next',
+      prevEl: '.swiper-button-prev',
+    },
+  });
+
+  const swiperThumbs = new Swiper('.product-swiper-thumbs', {
+    loop: true,
+    spaceBetween: 10,
+    slidesPerView: 4,
+    freeMode: true,
+    watchSlidesProgress: true,
+  });
+
+  swiperMain.controller.control = swiperThumbs;
+  swiperThumbs.controller.control = swiperMain;
+
   function increaseQty() {
     const input = document.getElementById('quantity');
     if (parseInt(input.value) < 10) input.value = parseInt(input.value) + 1;
