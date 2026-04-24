@@ -22,6 +22,8 @@ class DeviceModel(models.Model):
 
 
 class Product(models.Model):
+
+    # Which e-reader brand this product is for
     BRAND_CHOICES = [
         ('kindle', 'Amazon Kindle'),
         ('kobo', 'Kobo'),
@@ -29,21 +31,46 @@ class Product(models.Model):
         ('bigme', 'Bigme'),
     ]
 
+    # NEW — What type of accessory this product is
+    CATEGORY_CHOICES = [
+        ('covers', 'All Covers'),
+        ('chargers', 'Chargers & Cables'),
+        ('batteries', 'Batteries'),
+        ('screen_guards', 'Screen Guards'),
+        ('stands', 'Stands'),
+        ('stickers', 'Stickers & Skins'),
+        ('other', 'Other Accessories'),
+    ]
+
     name = models.CharField(max_length=200)
-    full_title = models.CharField(max_length=500, blank=True, help_text="Longer title displayed below the main name")
+    full_title = models.CharField(
+        max_length=500, blank=True,
+        help_text="Longer title displayed below the main name"
+    )
     slug = models.SlugField(unique=True)
     description = models.TextField(blank=True)
+
+    # Which brand of e-reader (Kindle, Kobo, etc.)
     brand = models.CharField(
         max_length=20,
         choices=BRAND_CHOICES,
         default='kindle'
     )
+
+    # NEW — What category of accessory
+    category = models.CharField(
+        max_length=20,
+        choices=CATEGORY_CHOICES,
+        default='covers'
+    )
+
     # One product can be compatible with MULTIPLE models
     compatible_models = models.ManyToManyField(
         DeviceModel,
         blank=True,
         related_name='products'
     )
+
     price_ks = models.PositiveIntegerField(help_text="Price in MMK")
     original_price_ks = models.PositiveIntegerField(default=0)
     image_url = models.URLField(blank=True)
@@ -51,15 +78,18 @@ class Product(models.Model):
     is_active = models.BooleanField(default=True)
 
     class Meta:
-        ordering = ['brand', 'name']
+        ordering = ['category', 'name']  # updated ordering
 
     def __str__(self):
-        return f"{self.get_brand_display()} | {self.name}"
+        return f"{self.get_category_display()} | {self.name}"
 
     @property
     def discount_percent(self):
         if self.original_price_ks > self.price_ks:
-            return int(((self.original_price_ks - self.price_ks) / self.original_price_ks) * 100)
+            return int(
+                ((self.original_price_ks - self.price_ks)
+                 / self.original_price_ks) * 100
+            )
         return 0
 
 class ProductImage(models.Model):

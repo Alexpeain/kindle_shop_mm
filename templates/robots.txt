@@ -1,0 +1,6 @@
+User-agent: *
+Allow: /
+Disallow: /admin/
+Disallow: /preorder/thanks/
+
+Sitemap: https://kindle-shop.onrender.com/sitemap.xml

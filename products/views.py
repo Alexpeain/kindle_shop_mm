@@ -6,17 +6,19 @@ from .forms import PreOrderForm
 
 def product_list(request):
     products = Product.objects.filter(is_active=True)
+    selected_category = request.GET.get('category', '')
     selected_brand = request.GET.get('brand', '')
+
+    if selected_category:
+        products = products.filter(category=selected_category)
 
     if selected_brand:
         products = products.filter(brand=selected_brand)
 
-    # FIX 5: pass full BRAND_CHOICES list so all tabs render
-    brand_choices = Product.BRAND_CHOICES
-
     return render(request, "product/product_list.html", {
         "products": products,
-        "brand_choices": brand_choices,
+        "categories": Product.CATEGORY_CHOICES,
+        "selected_category": selected_category,
         "selected_brand": selected_brand,
     })
 
@@ -42,3 +44,11 @@ def product_detail(request, slug):
 
 def preorder_thanks(request, pk):
     return render(request, "product/preorder_thanks.html", {"preorder_id": pk})
+
+
+def refund_policy(request):
+    return render(request, "product/refund_policy.html")
+
+
+def privacy_policy(request):
+    return render(request, "product/privacy_policy.html")

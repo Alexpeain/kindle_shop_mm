@@ -18,15 +18,63 @@
         background: #f5f5f5;
       }
 
-      /* ── Header ── */
-      header {
+      /* ── Navbar ── */
+      nav {
         background: #111827;
         color: #fff;
-        padding: 16px 24px;
+        position: sticky;
+        top: 0;
+        z-index: 100;
+        box-shadow: 0 2px 8px rgba(0,0,0,.3);
       }
-      header strong {
+      nav .nav-inner {
+        max-width: 960px;
+        margin: 0 auto;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        height: 60px;
+        padding: 0 24px;
+      }
+      nav .nav-inner a {
+        color: #d1d5db;
+        text-decoration: none;
+      }
+      nav .nav-inner .logo a {
+        color: #fff;
         font-size: 18px;
-        letter-spacing: 0.5px;
+        font-weight: bold;
+      }
+      nav .nav-links {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+      }
+      nav .dropdown button {
+        background: transparent;
+        border: 1px solid #374151;
+        color: #d1d5db;
+        padding: 8px 12px;
+        border-radius: 6px;
+        font-size: 14px;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        gap: 4px;
+      }
+      nav #dropdown-menu {
+        display: none;
+      }
+      nav #mobile-menu {
+        display: none;
+      }
+      .active {
+        background-color: #374151;
+        color: white !important;
+      }
+      .dropdown a,
+      #mobile-menu a {
+        transition: background 0.2s, color 0.2s;
       }
 
       /* ── Main Layout ── */
@@ -160,6 +208,31 @@
         font-weight: bold;
       }
 
+      /* ── Mobile Responsiveness ── */
+      @media (max-width: 768px) {
+        nav .nav-inner {
+          flex-wrap: wrap;
+          padding: 12px 16px;
+        }
+        main {
+          padding: 16px;
+        }
+        .grid {
+          grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+          gap: 12px;
+        }
+        footer div[style*="grid"] {
+          grid-template-columns: 1fr !important;
+          gap: 24px !important;
+        }
+        .nav-links {
+          display: none !important;
+        }
+        #hamburger {
+          display: block !important;
+        }
+      }
+
       /* ── Mobile ── */
       @media (max-width: 600px) {
         .product-swiper-main .swiper-slide img {
@@ -174,13 +247,128 @@
   </head>
 
   <body>
-    <header>
-      <strong>Kindle Art Cases</strong>
-    </header>
+    <!-- ── Navbar ── -->
+    <nav>
+      <div class="nav-inner">
+
+        <!-- Logo / Brand -->
+        <div class="logo">
+          <a href="/">📚 E-reader Covers House</a>
+        </div>
+
+        <!-- Desktop Nav Links -->
+        <div class="nav-links">
+          <a href="/" style="padding: 8px 12px; border-radius: 6px; font-size: 14px;">Home</a>
+
+          <!-- Categories Dropdown -->
+          <div class="dropdown" style="position: relative;">
+            <button onclick="toggleDropdown()">
+              Categories ▾
+            </button>
+            <div id="dropdown-menu" style="
+              display: none;
+              position: absolute;
+              top: 44px;
+              left: 0;
+              background: #1f2937;
+              border: 1px solid #374151;
+              border-radius: 8px;
+              min-width: 220px;
+              box-shadow: 0 8px 24px rgba(0,0,0,.3);
+              z-index: 200;
+              overflow: hidden;
+            ">
+              <a href="/" style="display: block; padding: 12px 16px; color: #d1d5db; text-decoration: none; font-size: 14px; border-bottom: 1px solid #374151;">🏠 All Categories</a>
+              <a href="/?category=covers" style="display: block; padding: 12px 16px; color: #d1d5db; text-decoration: none; font-size: 14px; border-bottom: 1px solid #374151;">📖 All Covers</a>
+              <a href="/?category=chargers" style="display: block; padding: 12px 16px; color: #d1d5db; text-decoration: none; font-size: 14px; border-bottom: 1px solid #374151;">🔌 Chargers & Cables</a>
+              <a href="/?category=batteries" style="display: block; padding: 12px 16px; color: #d1d5db; text-decoration: none; font-size: 14px; border-bottom: 1px solid #374151;">🔋 Batteries</a>
+              <a href="/?category=screen_guards" style="display: block; padding: 12px 16px; color: #d1d5db; text-decoration: none; font-size: 14px; border-bottom: 1px solid #374151;">🛡️ Screen Guards</a>
+              <a href="/?category=stands" style="display: block; padding: 12px 16px; color: #d1d5db; text-decoration: none; font-size: 14px; border-bottom: 1px solid #374151;">🖥️ Stands</a>
+              <a href="/?category=stickers" style="display: block; padding: 12px 16px; color: #d1d5db; text-decoration: none; font-size: 14px; border-bottom: 1px solid #374151;">🎨 Stickers & Skins</a>
+            </div>
+          </div>
+
+          <a href="/refund-policy/" style="padding: 8px 12px; border-radius: 6px; font-size: 14px;">Refund Policy</a>
+        </div>
+
+        <!-- Mobile Hamburger -->
+        <button id="hamburger" onclick="toggleMobileMenu()" style="
+          display: none;
+          background: transparent;
+          border: none;
+          color: #fff;
+          font-size: 24px;
+          cursor: pointer;
+        ">☰</button>
+
+      </div>
+
+      <!-- Mobile Menu -->
+      <div id="mobile-menu" style="display: none; padding: 12px 0; border-top: 1px solid #374151;">
+        <a href="/" style="display: block; padding: 12px 16px; color: #d1d5db; text-decoration: none; font-size: 14px;">🏠 Home</a>
+        <a href="/?category=covers" style="display: block; padding: 12px 16px; color: #d1d5db; text-decoration: none; font-size: 14px;">📖 All Covers</a>
+        <a href="/?category=chargers" style="display: block; padding: 12px 16px; color: #d1d5db; text-decoration: none; font-size: 14px;">🔌 Chargers & Cables</a>
+        <a href="/?category=batteries" style="display: block; padding: 12px 16px; color: #d1d5db; text-decoration: none; font-size: 14px;">🔋 Batteries</a>
+        <a href="/?category=screen_guards" style="display: block; padding: 12px 16px; color: #d1d5db; text-decoration: none; font-size: 14px;">🛡️ Screen Guards</a>
+        <a href="/?category=stands" style="display: block; padding: 12px 16px; color: #d1d5db; text-decoration: none; font-size: 14px;">🖥️ Stands</a>
+        <a href="/?category=stickers" style="display: block; padding: 12px 16px; color: #d1d5db; text-decoration: none; font-size: 14px;">🎨 Stickers & Skins</a>
+        <a href="/refund-policy/" style="display: block; padding: 12px 16px; color: #d1d5db; text-decoration: none; font-size: 14px;">↩️ Refund Policy</a>
+      </div>
+    </nav>
 
     <main>
       {% block content %}{% endblock %}
     </main>
+
+    <!-- ── Footer ── -->
+    <footer style="
+      background: #111827;
+      color: #9ca3af;
+      padding: 40px 24px 20px;
+      margin-top: 60px;
+    ">
+      <div style="max-width: 960px; margin: 0 auto;">
+
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 32px; margin-bottom: 32px;">
+
+          <!-- Brand -->
+          <div>
+            <strong style="color: #fff; font-size: 16px;">Kindle Art Cases 📚</strong>
+            <p style="margin-top: 10px; font-size: 14px; line-height: 1.6;">
+              Premium Kindle covers & accessories.<br>
+              Delivered across Myanmar.
+            </p>
+          </div>
+
+          <!-- Quick Links -->
+          <div>
+            <strong style="color: #fff; font-size: 14px;">Quick Links</strong>
+            <ul style="list-style: none; padding: 0; margin-top: 10px;">
+              <li><a href="/" style="color: #9ca3af; text-decoration: none; font-size: 14px;">🏠 Home</a></li>
+              <li><a href="/refund-policy/" style="color: #9ca3af; text-decoration: none; font-size: 14px;">↩️ Refund Policy</a></li>
+              <li><a href="/privacy-policy/" style="color: #9ca3af; text-decoration: none; font-size: 14px;">🔒 Privacy Policy</a></li>
+            </ul>
+          </div>
+
+          <!-- Contact -->
+          <div>
+            <strong style="color: #fff; font-size: 14px;">Contact Us</strong>
+            <ul style="list-style: none; padding: 0; margin-top: 10px; font-size: 14px;">
+              <li>📧 asapvendor@gmail.com</li>
+              <li>📱 Facebook: <a href="https://facebook.com/read50" target="_blank" style="color: #9ca3af; text-decoration: none;">@KindleArtCases</a></li>
+              <li>📍 Namkham Township,Myanmar</li>
+            </ul>
+          </div>
+
+        </div>
+
+        <!-- Bottom bar -->
+        <div style="border-top: 1px solid #374151; padding-top: 16px; text-align: center; font-size: 13px;">
+          © 2026 Covers House. All rights reserved.
+        </div>
+
+      </div>
+    </footer>
 
     <!-- Swiper.js JS -->
     <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
@@ -213,5 +401,69 @@
     </script>
 
     {% block extra_js %}{% endblock %}
+
+    <script>
+      // Dropdown toggle
+      function toggleDropdown() {
+        const menu = document.getElementById('dropdown-menu');
+        menu.style.display = menu.style.display === 'none' ? 'block' : 'none';
+      }
+      // Close dropdown when clicking outside
+      document.addEventListener('click', function(e) {
+        if (!e.target.closest('.dropdown')) {
+          document.getElementById('dropdown-menu').style.display = 'none';
+        }
+      });
+      // Mobile menu toggle
+      function toggleMobileMenu() {
+        const menu = document.getElementById('mobile-menu');
+        menu.style.display = menu.style.display === 'none' ? 'block' : 'none';
+      }
+
+      function updateActiveLink(activeCategory, activeBrand) {
+        document.querySelectorAll('.dropdown a, #mobile-menu a').forEach(link => {
+          link.classList.remove('active');
+        });
+
+        const categoryMap = {
+          'covers': '[href="/?category=covers"]',
+          'chargers': '[href="/?category=chargers"]',
+          'batteries': '[href="/?category=batteries"]',
+          'screen_guards': '[href="/?category=screen_guards"]',
+          'stands': '[href="/?category=stands"]',
+          'stickers': '[href="/?category=stickers"]'
+        };
+
+        const categorySelector = activeCategory && categoryMap[activeCategory]
+          ? categoryMap[activeCategory]
+          : '[href="/"]';
+        const categoryLink = document.querySelector(categorySelector);
+        if (categoryLink) categoryLink.classList.add('active');
+      }
+
+      function filterProductsByCategoryAndBrand() {
+        const urlParams = new URLSearchParams(window.location.search);
+        const activeCategory = urlParams.get('category') || 'all';
+        const activeBrand = urlParams.get('brand') || 'all';
+        const products = document.querySelectorAll('.product');
+
+        products.forEach(product => {
+          const productCategory = product.dataset.category;
+          const productBrand = product.dataset.brand;
+          const categoryMatch = activeCategory === 'all' || productCategory === activeCategory;
+          const brandMatch = activeBrand === 'all' || productBrand === activeBrand;
+
+          if (categoryMatch && brandMatch) {
+            product.style.display = '';
+          } else {
+            product.style.display = 'none';
+          }
+        });
+
+        updateActiveLink(activeCategory, activeBrand);
+      }
+
+      document.addEventListener('DOMContentLoaded', filterProductsByCategoryAndBrand);
+    </script>
   </body>
 </html>

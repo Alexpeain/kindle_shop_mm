@@ -14,15 +14,15 @@
     font-size: 14px;
   }
 
-  /* ── Brand Filter Tabs ── */
-  .brand-tabs {
+  /* ── Category Filter Tabs ── */
+  .category-tabs {
     display: flex;
     gap: 10px;
     margin-bottom: 24px;
     flex-wrap: wrap;
   }
 
-  .brand-tab {
+  .category-tab {
     padding: 8px 16px;
     border: 2px solid #ddd;
     background: white;
@@ -35,14 +35,42 @@
     white-space: nowrap;
   }
 
-  .brand-tab:hover {
+  .category-tab:hover {
     border-color: #111827;
     color: #111827;
   }
 
-  .brand-tab.active {
+  .category-tab.active {
     background: #111827;
     color: white;
+    border-color: #111827;
+  }
+
+  .brand-filter-row {
+    margin: 16px 0 24px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+
+  .brand-pill {
+    border-radius: 999px;
+    padding: 6px 14px;
+    font-size: 14px;
+    border: 1px solid #d1d5db;
+    background: #f9fafb;
+    color: #111827;
+    text-decoration: none;
+    transition: background 0.15s ease, color 0.15s ease, border-color 0.15s ease;
+  }
+
+  .brand-pill:hover {
+    background: #e5e7eb;
+  }
+
+  .brand-pill.active {
+    background: #111827;
+    color: #f9fafb;
     border-color: #111827;
   }
 
@@ -215,24 +243,49 @@
 <h1>E-reader Cases</h1>
 <p class="subtitle">Beautiful artistic designs for Kindle, Kobo, Boox and Bigme</p>
 
-<!-- FIX 5: Brand Filter Tabs -->
-<div class="brand-tabs">
+<!-- Categories Filter Tabs -->
+<div class="category-tabs">
   <a href="{% url 'product_list' %}"
-     class="brand-tab {% if not selected_brand %}active{% endif %}">
-    All Brands
+     class="category-tab {% if not selected_category %}active{% endif %}">
+    All Categories
   </a>
-  {% for brand_value, brand_label in brand_choices %}
-    <a href="?brand={{ brand_value }}"
-       class="brand-tab {% if selected_brand == brand_value %}active{% endif %}">
-      {{ brand_label }}
+  {% for category_value, category_label in categories %}
+    <a href="?category={{ category_value }}"
+       class="category-tab {% if selected_category == category_value %}active{% endif %}">
+      {{ category_label }}
     </a>
   {% endfor %}
 </div>
 
+{% if selected_category == 'covers' %}
+  <div id="brand-filters" class="brand-filter-row">
+    <a href="/?category=covers"
+       class="brand-pill {% if not selected_brand %}active{% endif %}">
+      All Covers
+    </a>
+    <a href="/?category=covers&brand=kindle"
+       class="brand-pill {% if selected_brand == 'kindle' %}active{% endif %}">
+      Amazon Kindle
+    </a>
+    <a href="/?category=covers&brand=kobo"
+       class="brand-pill {% if selected_brand == 'kobo' %}active{% endif %}">
+      Kobo
+    </a>
+    <a href="/?category=covers&brand=boox"
+       class="brand-pill {% if selected_brand == 'boox' %}active{% endif %}">
+      Boox
+    </a>
+    <a href="/?category=covers&brand=bigme"
+       class="brand-pill {% if selected_brand == 'bigme' %}active{% endif %}">
+      Bigme
+    </a>
+  </div>
+{% endif %}
+
 <!-- Product Grid -->
 <div class="grid">
   {% for product in products %}
-  <div class="card">
+  <div class="card product" data-category="{{ product.category }}" data-brand="{{ product.brand }}">
 
     <!-- FIX 2: image with fallback -->
     <div class="card-image-wrapper">

@@ -15,7 +15,8 @@ class DeviceModelAdmin(admin.ModelAdmin):
 
 @admin.register(Product)
 class ProductAdmin(admin.ModelAdmin):
-    list_display = ('name', 'brand', 'price_ks', 'is_active')
+    list_display = ('name', 'category', 'brand', 'price_ks', 'is_active')
+    list_filter = ('category', 'brand', 'is_active')
     prepopulated_fields = {'slug': ('name',)}
     filter_horizontal = ('compatible_models',)  # nice UI for M2M
     inlines = [ProductImageInline]
@@ -24,11 +25,11 @@ class ProductAdmin(admin.ModelAdmin):
 @admin.register(PreOrder)
 class PreOrderAdmin(admin.ModelAdmin):
     list_display = ('full_name', 'product', 'device_model', 'quantity', 'paid', 'created_at')
-    list_filter = ('paid', 'product__brand')
+    list_filter = ('paid', 'product__category', 'product__brand')
     search_fields = ('full_name', 'email', 'phone')
 
 
 @admin.register(ProductImage)
 class ProductImageAdmin(admin.ModelAdmin):
     list_display = ('product', 'image', 'order')
-    list_filter = ('product__brand',)
+    list_filter = ('product__category', 'product__brand')
